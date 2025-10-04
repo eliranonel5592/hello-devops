@@ -1,0 +1,12 @@
+name: My First GitHub Action
+
+on:
+  push:   # ירוץ על כל Push ל-repo
+    branches: [ "main" ]
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Hello
+        run: echo "Hello DevOps 🚀 זה ה-Workflow הראשון שלי ב-GitHub Actions!"
