@@ -1,6 +1,3 @@
-# Hello-DevOps
- �
-�
-זה הריפו הראשון שלי.
-- הוספת סעיף ניסיון ראשון.
-# זה שינוי ראשון שאני עושה ב־GUI של GitHub
+# Hello DevOps Project
+
+This project demonstrates a simple CI/CD workflow for Docker builds.
