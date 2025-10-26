@@ -1,0 +1,26 @@
+name: Docker Build & Test
+
+on:
+  push:
+    branches: [ feature/docker-hello ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # בונה מתוך התיקייה app כי שם נמצא ה-Dockerfile
+      - name: Build Docker image
+        run: docker build -t hello-flask-app ./app
+
+      # מריץ את הקונטיינר ובודק שהוא עונה
+      - name: Run container and smoke test
+        run: |
+          docker run -d -p 5000:5000 --name web hello-flask-app
+          sleep 3
+          curl -fsS http://127.0.0.1:5000 | grep "Hello DevOps"
+          docker logs web
