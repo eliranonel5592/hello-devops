@@ -1,18 +1,37 @@
 name: CI
 
 on:
-  pull_request:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
-  basic-checks:
+  build-and-lint:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
 
-      # דוגמה לבדיקה אמיתית: README חייב להכיל את המילה "DevOps"
-      - name: Validate README content
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies (if exists)
         run: |
-          grep -q "DevOps" README.md
-          echo "README contains 'DevOps' ✔"
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            echo "requirements.txt not found, skipping."
+          fi
+
+      - name: Lint Python with ruff
+        run: |
+          pip install ruff
+          ruff check .
+
+      - name: Build Docker image
+        run: |
+          docker build -t eliran-hello-devops:test .
